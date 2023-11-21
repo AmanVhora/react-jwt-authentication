@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../slices/authSlice';
+import { removeCurrentUser } from '../slices/userSlice';
 
 const Navigationbar = () => {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ const Navigationbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    navigate('/', { replace: true });
+    dispatch(removeCurrentUser());
+    navigate('/login', { replace: true });
   };
 
   let button;
@@ -21,7 +23,10 @@ const Navigationbar = () => {
       <Button color="danger" onClick={handleLogout}>Logout</Button> 
     </>
   } else {
-    button = <NavLink tag={Link} to="/login">Login</NavLink>
+    button = <>
+      <NavLink tag={Link} to="/signup" className='me-3'>Signup</NavLink>
+      <NavLink tag={Link} to="/login">Login</NavLink>
+    </>
   }
 
   return (

@@ -14,12 +14,12 @@ export const Login = () => {
   };
 
   const handleLogin = () => {
-    dispatch(login({ email: credentials.email, password: credentials.password }))
+    dispatch(login({ email: credentials.email, password: credentials.password }));
     navigate('/', { replace: true });
   };
 
   return (
-    <div className="container w-25 mt-3">
+    <div className="container w-50 mt-3">
       <h2>Login</h2>
       <Form>
         <div>
