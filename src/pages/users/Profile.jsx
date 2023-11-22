@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAccount, logout } from "../../slices/userSlice";
+import { allUsers, deleteAccount, logout } from "../../slices/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "reactstrap";
 
 export const Profile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token, currentUser } = useSelector((state) => state.users);
+  const { token, username } = useSelector((state) => state.users);
+  const currentUser = allUsers.find(user => user.username === username);
 
   const handleDeleteAccount = () => {
     dispatch(deleteAccount({ id: currentUser.id, token: token }));

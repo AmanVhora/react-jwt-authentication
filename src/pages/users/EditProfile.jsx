@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Input, Label } from "reactstrap";
-import { editProfile } from "../../slices/userSlice";
+import { allUsers, editProfile } from "../../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
 export const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { token, currentUser } = useSelector((state) => state.users);
+  const { token, username } = useSelector((state) => state.users);
+  const currentUser = allUsers.find(user => user.username === username);
+
   const [data, setData] = useState({ name: currentUser.name, username: currentUser.username, email: currentUser.email, password: '' });
 
   const handleChange = (e) => {
@@ -19,13 +21,11 @@ export const EditProfile = () => {
     dispatch(editProfile({
       id: currentUser.id,
       token: token,
-      userData: {
-        user: {
-          name: data.name,
-          username: data.username,
-          email: data.email,
-          password: data.password
-        }
+      user: {
+        name: data.name,
+        username: data.username,
+        email: data.email,
+        password: data.password
       }
     }));
     navigate('/profile', { replace: true });
