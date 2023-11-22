@@ -3,25 +3,18 @@ import './App.css';
 import Navigationbar from './components/Navbar';
 import Routes from './routes/Routes';
 import { useDispatch, useSelector } from "react-redux";
-import { allUsers, getCurrentUser, profile } from './slices/userSlice';
+import { allUsers } from './slices/userSlice';
 import { useEffect } from 'react';
 
 function App() {
   const dispatch = useDispatch();
-  const currentUser = useSelector(getCurrentUser);
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.users);
   
   useEffect(() => {
     if (token === null) {
       dispatch(allUsers());
     }
   }, []);
-  
-  useEffect(() => {
-    if (token !== null) {
-      dispatch(profile({ id: currentUser.id, token: token }));
-    }
-  }, [token]);
 
   return (
     <BrowserRouter>

@@ -3,12 +3,12 @@ import { Routes as RouterRoutes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Login } from "../pages/Login";
 import { Home } from "../pages/Home";
-import { Profile } from "../pages/Profile";
-import { EditProfile } from "../pages/EditProfile";
+import { Profile } from "../pages/users/Profile";
+import { EditProfile } from "../pages/users/EditProfile";
 import { Signup } from "../pages/Signup";
 
 const Routes = () => {
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.users);
 
   return (
     <RouterRoutes>

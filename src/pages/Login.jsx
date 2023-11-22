@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, Label } from "reactstrap";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../slices/authSlice";
+import { login } from "../slices/userSlice";
 
 export const Login = () => {
   const navigate = useNavigate();

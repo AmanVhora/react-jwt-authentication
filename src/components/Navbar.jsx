@@ -2,17 +2,15 @@ import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../slices/authSlice';
-import { removeCurrentUser } from '../slices/userSlice';
+import { logout } from '../slices/userSlice';
 
 const Navigationbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.users);
 
   const handleLogout = () => {
     dispatch(logout());
-    dispatch(removeCurrentUser());
     navigate('/login', { replace: true });
   };
 

@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Input, Label } from "reactstrap";
-import { editProfile, getCurrentUser } from "../slices/userSlice";
+import { editProfile } from "../../slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import { updateState } from "../slices/authSlice";
 
 export const EditProfile = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const currentUser = useSelector(getCurrentUser);
-  const { token } = useSelector((state) => state.auth);
-  const [data, setData] = useState({ name: currentUser.name, username: currentUser.username, email: currentUser.email, password: '123456' });
+  const { token, currentUser } = useSelector((state) => state.users);
+  const [data, setData] = useState({ name: currentUser.name, username: currentUser.username, email: currentUser.email, password: '' });
 
   const handleChange = (e) => {
     setData(prevData => ({ ...prevData, [e.target.name]: e.target.value }));
@@ -30,13 +28,14 @@ export const EditProfile = () => {
         }
       }
     }));
-    dispatch(updateState(data.username));
     navigate('/profile', { replace: true });
   };
 
+  const canUpdate = [data.name, data.username, data.email, data.password].every(Boolean);
+
   return (
     <div className="container w-50 mt-3">
-      <h2>Edit your profile</h2>
+      <h2 className="mb-3">Edit your profile</h2>
       <Form>
         <div>
           <Label for="name">Name</Label>
@@ -59,7 +58,7 @@ export const EditProfile = () => {
         </div>
 
         <div className="mt-3">
-          <Button color="primary" onClick={handleUpdateProfile}>Update</Button>
+          <Button color="primary" onClick={handleUpdateProfile} disabled={!canUpdate}>Update</Button>
         </div>
       </Form>
     </div>

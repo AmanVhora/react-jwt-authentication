@@ -18,9 +18,11 @@ export const Signup = () => {
     navigate('/login', { replace: true });
   };
 
+  const canSave = [data.name, data.username, data.email, data.password].every(Boolean);
+
   return (
     <div className="container w-50 mt-3">
-      <h2>Sign up</h2>
+      <h2 className="mb-3">Sign up</h2>
       <Form>
         <div>
           <Label for="name">Name</Label>
@@ -43,7 +45,7 @@ export const Signup = () => {
         </div>
 
         <div className="mt-3">
-          <Button color="primary" onClick={handleUpdateProfile}>Signup</Button>
+          <Button color="primary" onClick={handleUpdateProfile} disabled={!canSave}>Signup</Button>
         </div>
       </Form>
     </div>
