@@ -5,16 +5,16 @@ import { Button } from "reactstrap";
 import { logout } from "../slices/authSlice";
 
 export const Profile = () => {
-  const currentUser = useSelector(getCurrentUser)
+  const currentUser = useSelector(getCurrentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { token } = useSelector(state => state.auth)
+  const { token } = useSelector(state => state.auth);
 
   const handleDeleteAccount = () => {
-    dispatch(deleteAccount({ id: currentUser.id, token: token }))
+    dispatch(deleteAccount({ id: currentUser.id, token: token }));
     dispatch(removeCurrentUser());
     dispatch(logout());
-    navigate('/', { replace: true })
+    navigate('/', { replace: true });
   };
 
   return (

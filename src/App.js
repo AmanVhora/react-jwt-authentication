@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 
 function App() {
   const dispatch = useDispatch();
-  const currentUser = useSelector(getCurrentUser)
+  const currentUser = useSelector(getCurrentUser);
   const { token } = useSelector((state) => state.auth);
   
   useEffect(() => {

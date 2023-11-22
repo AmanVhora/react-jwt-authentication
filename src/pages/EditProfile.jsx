@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Input, Label } from "reactstrap";
 import { editProfile, getCurrentUser } from "../slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { updateState } from "../slices/authSlice";
 
 export const EditProfile = () => {
   const dispatch = useDispatch();
@@ -13,19 +14,24 @@ export const EditProfile = () => {
   const [data, setData] = useState({ name: currentUser.name, username: currentUser.username, email: currentUser.email, password: '123456' });
 
   const handleChange = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value })
+    setData(prevData => ({ ...prevData, [e.target.name]: e.target.value }));
   };
 
   const handleUpdateProfile = () => {
-    console.log(data);
     dispatch(editProfile({
       id: currentUser.id,
       token: token,
-      user: {
-        ...data
+      userData: {
+        user: {
+          name: data.name,
+          username: data.username,
+          email: data.email,
+          password: data.password
+        }
       }
     }));
-    navigate('/profile', { replace: true })
+    dispatch(updateState(data.username));
+    navigate('/profile', { replace: true });
   };
 
   return (
