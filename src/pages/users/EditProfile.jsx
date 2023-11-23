@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Form, Input, Label } from "reactstrap";
+import { Alert, Button, Form, Input, Label } from "reactstrap";
 import { allUsers, editProfile } from "../../slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -27,15 +27,26 @@ export const EditProfile = () => {
         email: data.email,
         password: data.password
       }
-    }));
-    navigate('/profile', { replace: true });
+    })).unwrap()
+    .then(() => {
+      navigate('/profile', { replace: true });
+    })
+    .catch(() => {
+      navigate('/profile/edit', { replace: true });
+    });
   };
 
   const canUpdate = [data.name, data.username, data.email, data.password].every(Boolean);
+  const { editErrors } = useSelector(state => state.users);
+
+  const errors = editErrors && editErrors.map(error => {
+    return (<li key={error}>{error}</li>);
+  });
 
   return (
     <div className="container w-50 mt-3">
       <h2 className="mb-3">Edit your profile</h2>
+      {editErrors ? <Alert color="danger">{<ul className="mb-0">{errors}</ul>}</Alert> : ''}
       <Form>
         <div>
           <Label for="name">Name</Label>

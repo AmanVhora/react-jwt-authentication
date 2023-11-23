@@ -1,26 +1,33 @@
-import { useNavigate } from "react-router-dom";
-import { Button, Form, Input, Label } from "reactstrap";
+import { Link, useNavigate } from "react-router-dom";
+import { Alert, Button, Form, Input, Label } from "reactstrap";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/userSlice";
 
 export const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const { loginError } = useSelector(state => state.users);
 
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
   const handleLogin = () => {
-    dispatch(login({ email: credentials.email, password: credentials.password }));
-    navigate('/', { replace: true });
+    dispatch(login({ email: credentials.email, password: credentials.password })).unwrap()
+    .then(() => {
+      navigate('/profile', { replace: true });
+    })
+    .catch(() => {
+      navigate('/login', { replace: true });
+    });
   };
 
   return (
     <div className="container w-50 mt-3">
       <h2>Login</h2>
+      {loginError ? <Alert color="danger" className="text-center">{loginError}</Alert> : ''}
       <Form>
         <div>
           <Label for="email">Email</Label>
@@ -36,6 +43,7 @@ export const Login = () => {
           <Button color="primary" onClick={handleLogin}>Login</Button>
         </div>
       </Form>
+      <div className="mt-3">Don't have an account? <Link to="/signup">Register</Link></div>
     </div>
   );
 };

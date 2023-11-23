@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Button, Form, Input, Label } from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Button, Form, Input, Label } from "reactstrap";
 import { createAccount } from "../slices/userSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const navigate = useNavigate();
@@ -14,15 +14,26 @@ export const Signup = () => {
   };
 
   const handleUpdateProfile = () => {
-    dispatch(createAccount({ user: data }));
-    navigate('/login', { replace: true });
+    dispatch(createAccount({ user: data })).unwrap()
+    .then(() => {
+      navigate('/login', { replace: true });
+    })
+    .catch(() => {
+      navigate('/signup', { replace: true });
+    });
   };
 
   const canSave = [data.name, data.username, data.email, data.password].every(Boolean);
+  const { signupErrors } = useSelector(state => state.users);
+
+  const errors = signupErrors && signupErrors.map(error => {
+    return (<li key={error}>{error}</li>);
+  });
 
   return (
     <div className="container w-50 mt-3">
       <h2 className="mb-3">Sign up</h2>
+      {signupErrors ? <Alert color="danger">{<ul className="mb-0">{errors}</ul>}</Alert> : ''}
       <Form>
         <div>
           <Label for="name">Name</Label>
@@ -48,6 +59,7 @@ export const Signup = () => {
           <Button color="primary" onClick={handleUpdateProfile} disabled={!canSave}>Signup</Button>
         </div>
       </Form>
+      <div className="mt-3">Already have an account? <Link to="/login">Login</Link></div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ const Navigationbar = () => {
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login', { replace: true });
+    localStorage.removeItem('alertDismissed')
   };
 
   let button;
