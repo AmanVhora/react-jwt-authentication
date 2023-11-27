@@ -17,7 +17,7 @@ export const Login = () => {
   const handleLogin = () => {
     dispatch(login({ email: credentials.email, password: credentials.password })).unwrap()
     .then(() => {
-      navigate('/profile', { replace: true });
+      navigate('/', { replace: true });
     })
     .catch(() => {
       navigate('/login', { replace: true });
